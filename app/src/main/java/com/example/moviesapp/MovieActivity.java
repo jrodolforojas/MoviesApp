@@ -11,5 +11,7 @@ public class MovieActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
     }
 }
