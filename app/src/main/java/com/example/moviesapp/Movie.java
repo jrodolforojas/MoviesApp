@@ -9,14 +9,14 @@ public class Movie {
     private String rating;
     private String tomatoMeter;
     private String duration;
-    private String amazonPrice;
+    private String appleTVPrice;
     private String googlePlayPrice;
     private String postSrc;
-    private ArrayList<String> imagesSrc;
+    private ArrayList<String> mediaSrc;
     private String synopsis;
 
     public Movie() {
-        this.imagesSrc = new ArrayList<>();
+        this.mediaSrc = new ArrayList<>();
     }
 
     public String getName() {
@@ -67,12 +67,12 @@ public class Movie {
         this.duration = duration;
     }
 
-    public String getAmazonPrice() {
-        return amazonPrice;
+    public String getAppleTVPrice() {
+        return appleTVPrice;
     }
 
-    public void setAmazonPrice(String amazonPrice) {
-        this.amazonPrice = amazonPrice;
+    public void setAppleTVPrice(String appleTVPrice) {
+        this.appleTVPrice = appleTVPrice;
     }
 
     public String getGooglePlayPrice() {
@@ -99,4 +99,11 @@ public class Movie {
         this.synopsis = synopsis;
     }
 
+    public ArrayList<String> getMediaSrc() {
+        return mediaSrc;
+    }
+
+    public void addMediaItem(String media){
+        this.mediaSrc.add(media);
+    }
 }

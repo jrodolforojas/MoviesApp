@@ -6,11 +6,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 public class MainActivity extends AppCompatActivity {
 
     TextView tomatoMeter;
@@ -26,41 +21,27 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                webScraping.getRottenTomatoesRating2(newMovie);
-//                tomatoMeter.setText(newMovie.getTomatoMeter());
-                Log.d("MainActivity","RATING: " + newMovie.getTomatoMeter());
+                webScraping.getRottenTomatoesRating(newMovie);
+                webScraping.getGooglePlayInfo(newMovie);
+                webScraping.getAppleTVInfo(newMovie);
+                printMovieInfo(newMovie);
             }
         }).start();
-
-//        webScraping.getRottenTomatoesRating2(newMovie);
-//        webScraping.getAmazonInfo(newMovie);
-//        tomatoMeter.setText(newMovie.);
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    Document doc = Jsoup.connect("https://www.amazon.com/Spider-Man-Far-Home-Tom-Holland/dp/B07TKZQFJC").get();
-//                    Element divMovie = doc.selectFirst("div.abwJ5F tFxybk &lowbar2LF&lowbar6p &lowbar2cx-XY");
-//                    String amazonPrice = divMovie.selectFirst("span.&lowbar;36qUej").text();
-//                    Log.d("WebScraping", "AMAZON PRICE: " + amazonPrice);
-//                    newMovie.setAmazonPrice(amazonPrice);
-//
-//                } catch (Exception exception){
-//                    Log.d("MainActivity", exception.getMessage());
-//                }
-//
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        tomatoMeter.setText(newMovie.getAmazonPrice());
-//                    }
-//                });
-//
-//            }
-//        }).start();
-
     }
 
-    
+    private void printMovieInfo(Movie movie){
+        Log.d("Main Activity", "Name: " + movie.getName() + "\n" +
+                "TomatoMeter: " + movie.getTomatoMeter() + "\n" +
+                "Rating: " + movie.getRating() + "\n" +
+                "Duration: " + movie.getDuration() + "\n" +
+                "GP Price: " + movie.getGooglePlayPrice() + "\n" +
+                "AppleTV Price: " + movie.getAppleTVPrice() + "\n" +
+                "Post: " + movie.getPostSrc() + "\n" +
+                "Year: " + movie.getYear() + "\n" +
+                "Synopsis: " + movie.getSynopsis() + "\n" +
+                "CATEGORY: " + "FALTA" + "\n" +
+                "Video: " + "\n"
+        );
+    }
 
 }
