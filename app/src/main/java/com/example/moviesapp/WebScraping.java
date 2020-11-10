@@ -13,10 +13,10 @@ public class WebScraping {
     private final String PLAY_STORE;
     private final String APPLETV;
 
-    public WebScraping() {
-        this.ROTTEN_TOMATOES = "https://www.rottentomatoes.com/m/Aquaman";
-        this.PLAY_STORE = "https://play.google.com/store/movies/details/Aquaman?id=dvbliOZgQoE.P";
-        this.APPLETV = "https://itunes.apple.com/us/movie/aquaman-2018/id1444244278";
+    public WebScraping(String appleTV, String googlePlay, String rottenTomatoes) {
+        this.APPLETV = appleTV;
+        this.PLAY_STORE = googlePlay;
+        this.ROTTEN_TOMATOES = rottenTomatoes;
 
     }
 

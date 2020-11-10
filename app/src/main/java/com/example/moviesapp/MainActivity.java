@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,39 +17,48 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     ListView listView;
     ArrayList<Movie> movies = new ArrayList<>();
+    private DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         listView = findViewById(R.id.listView);
-        MyApadter myApadter = new MyApadter(this,movies);
-        WebScraping webScraping = new WebScraping();
-        Movie newMovie = new Movie();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                webScraping.getRottenTomatoesRating(newMovie);
-                webScraping.getGooglePlayInfo(newMovie);
-                webScraping.getAppleTVInfo(newMovie);
-                printMovieInfo(newMovie);
-                movies.add(newMovie);
+        getDataFromFirebase();
 
-            }
+//        //MyApadter myApadter = new MyApadter(this,movies);
+//        WebScraping webScraping = new WebScraping();
+//        Movie newMovie = new Movie();
+//
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                webScraping.getRottenTomatoesRating(newMovie);
+//                webScraping.getGooglePlayInfo(newMovie);
+//                webScraping.getAppleTVInfo(newMovie);
+//                printMovieInfo(newMovie);
+//                movies.add(newMovie);
+//            }
+//        }).start();
 
-
-        }).start();
 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                listView.setAdapter(myApadter);
+                //listView.setAdapter(myApadter);
             }
         });
     }
@@ -68,34 +78,35 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    class MyApadter extends ArrayAdapter<Movie>{
-        Context context;
-        ArrayList<Movie> movies;
+    private final class Parallel extends AsyncTask<Void,Void,String>{
 
-        public MyApadter(Context context, ArrayList<Movie> movies){
-            super(context,R.layout.row);
-            this.movies = movies;
-        }
-
-        @NonNull
         @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().
-                    getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-            View row = layoutInflater.inflate(R.layout.row, parent, false);
-
-            ImageView image = row.findViewById(R.id.image);
-            TextView title = row.findViewById(R.id.title);
-            TextView category = row.findViewById(R.id.category);
-            TextView price = row.findViewById(R.id.price);
-
-            title.setText(movies.get(position).getName());
-            category.setText(movies.get(position).getCategory());
-            price.setText(movies.get(position).getAppleTVPrice());
-
-            return row;
+        protected String doInBackground(Void... voids) {
+            return null;
         }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
+    }
+
+    private void getDataFromFirebase(){
+        database.child("movies").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot:
+                     snapshot.getChildren()) {
+                    String tomato = dataSnapshot.child("tomato").getValue().toString();
+                    Log.d("FIREBASE", tomato);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
 }
