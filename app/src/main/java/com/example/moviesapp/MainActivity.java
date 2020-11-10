@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     ListView listView;
     ArrayList<Movie> movies = new ArrayList<>();
-    private DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+    private final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         listView = findViewById(R.id.listView);
-        getDataFromFirebase();
-
+//        getDataFromFirebase();
 //        //MyApadter myApadter = new MyApadter(this,movies);
 //        WebScraping webScraping = new WebScraping();
 //        Movie newMovie = new Movie();
@@ -54,40 +53,71 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        }).start();
 
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                //listView.setAdapter(myApadter);
+//            }
+//        });
 
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                //listView.setAdapter(myApadter);
-            }
-        });
     }
 
-    private void printMovieInfo(Movie movie){
-        Log.d("Main Activity", "Name: " + movie.getName() + "\n" +
-                "TomatoMeter: " + movie.getTomatoMeter() + "\n" +
-                "Rating: " + movie.getRating() + "\n" +
-                "Duration: " + movie.getDuration() + "\n" +
-                "GP Price: " + movie.getGooglePlayPrice() + "\n" +
-                "AppleTV Price: " + movie.getAppleTVPrice() + "\n" +
-                "Post: " + movie.getPostSrc() + "\n" +
-                "Year: " + movie.getYear() + "\n" +
-                "Synopsis: " + movie.getSynopsis() + "\n" +
-                "CATEGORY: " + "FALTA" + "\n" +
-                "Video: " + "\n"
-        );
+    private void printMovieInfo(){
+        for(Movie movie: movies){
+            Log.d("Main Activity", "Name: " + movie.getName() + "\n" +
+                    "TomatoMeter: " + movie.getTomatoMeter() + "\n" +
+                    "Rating: " + movie.getRating() + "\n" +
+                    "Duration: " + movie.getDuration() + "\n" +
+                    "GP Price: " + movie.getGooglePlayPrice() + "\n" +
+                    "AppleTV Price: " + movie.getAppleTVPrice() + "\n" +
+                    "Post: " + movie.getPostSrc() + "\n" +
+                    "Year: " + movie.getYear() + "\n" +
+                    "Synopsis: " + movie.getSynopsis() + "\n" +
+                    "CATEGORY: " + "FALTA" + "\n" +
+                    "Video: " + "\n");
+        }
     }
 
     private final class Parallel extends AsyncTask<Void,Void,String>{
 
         @Override
         protected String doInBackground(Void... voids) {
+            database.child("movies").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot dataSnapshot:
+                         snapshot.getChildren()) {
+                        String apple = dataSnapshot.child("apple").getValue().toString();
+                        String google = dataSnapshot.child("google").getValue().toString();
+                        String tomato = dataSnapshot.child("tomato").getValue().toString();
+
+                        WebScraping webScraping = new WebScraping(apple,google,tomato);
+                        Movie newMovie = new Movie();
+
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                webScraping.getRottenTomatoesRating(newMovie);
+                                webScraping.getGooglePlayInfo(newMovie);
+                                webScraping.getAppleTVInfo(newMovie);
+                                movies.add(newMovie);
+                            }
+                        }).start();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
             return null;
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            printMovieInfo();
         }
     }
 
