@@ -84,15 +84,9 @@ public class WebScraping {
 //            }
 
             //Get movie category
-//            Element divCategory = document.selectFirst("div.T9A3Nb");
-//            String category = divCategory.selectFirst("a").text();
-//            movie.setCategory(category);
-
-            // Get movie synopsis
-//            Element divSynopsis = document.selectFirst("div.DWPxHb");
-//            String synopsis = divSynopsis.selectFirst("span").text();
-//            movie.setSynopsis(synopsis);
-
+            Element divCategory = document.selectFirst("a.hrTbp,R8zArc");
+            String category = divCategory.text();
+            movie.setCategory(category);
 
         }
         catch (Exception exception){

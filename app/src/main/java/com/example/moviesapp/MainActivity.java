@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -105,15 +107,25 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             Log.d("POST",s);
-            printMovieInfo();
             MainAdapter mainAdapter = new MainAdapter(MainActivity.this, movies);
             listView.setAdapter(mainAdapter);
 
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @SuppressLint("ShowToast")
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Toast.makeText(MainActivity.this,
-                            "Movie: " + movies.get(i).getName(), Toast.LENGTH_SHORT);
+                    Log.d("Movie", movies.get(i).getName());
+                    Intent intent = new Intent(MainActivity.this, MovieActivity.class);
+                    intent.putExtra("post", movies.get(i).getPostSrc());
+                    intent.putExtra("title", movies.get(i).getName());
+                    intent.putExtra("category", movies.get(i).getCategory());
+                    intent.putExtra("year", movies.get(i).getYear());
+                    intent.putExtra("rating", movies.get(i).getRating());
+                    intent.putExtra("tomato", movies.get(i).getTomatoMeter());
+                    intent.putExtra("duration", movies.get(i).getDuration());
+                    intent.putExtra("apple", movies.get(i).getAppleTVPrice());
+                    intent.putExtra("google", movies.get(i).getGooglePlayPrice());
+                    startActivity(intent);
                 }
             });
 

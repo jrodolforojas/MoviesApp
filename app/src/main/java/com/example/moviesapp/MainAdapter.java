@@ -1,8 +1,6 @@
 package com.example.moviesapp;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.IOException;
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 public class MainAdapter extends BaseAdapter {
@@ -53,9 +52,12 @@ public class MainAdapter extends BaseAdapter {
         TextView title = view.findViewById(R.id.title);
         TextView price = view.findViewById(R.id.price);
         ImageView imageView = view.findViewById(R.id.image);
+        TextView category = view.findViewById(R.id.category);
         title.setText(movies.get(i).getName());
         price.setText(movies.get(i).getAppleTVPrice());
+        category.setText(movies.get(i).getCategory());
 
+        Picasso.with(context).load(movies.get(i).getPostSrc()).into(imageView);
 
         return view;
     }

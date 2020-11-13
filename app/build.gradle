@@ -43,4 +43,5 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.13.1'
     implementation platform('com.google.firebase:firebase-bom:26.0.0')
     implementation 'com.google.firebase:firebase-analytics'
+    compile 'com.squareup.picasso:picasso:2.3.2'
 }

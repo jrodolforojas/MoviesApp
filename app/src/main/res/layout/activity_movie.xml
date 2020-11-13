@@ -21,7 +21,7 @@
             app:layout_constraintTop_toTopOf="parent"></ImageView>
 
         <ImageView
-            android:id="@+id/imageView6"
+            android:id="@+id/post"
             android:layout_width="100dp"
             android:layout_height="120dp"
             android:layout_marginStart="15dp"
@@ -37,7 +37,9 @@
             android:layout_marginStart="1dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="1dp"
+            android:layout_marginBottom="40dp"
             android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/tomato"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView6"
             app:layout_constraintTop_toBottomOf="@+id/imageView">
@@ -47,7 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="Spider-Man: Far From Home"
+                android:text="Title"
                 android:textColor="#000"
                 android:textSize="20sp"
                 android:textStyle="bold"></TextView>
@@ -74,88 +76,91 @@
 
         </LinearLayout>
 
-        <RatingBar
-            android:id="@+id/ratingBar2"
-            style="@style/Widget.AppCompat.RatingBar.Small"
-            android:layout_width="80dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="40dp"
-            app:layout_constraintEnd_toStartOf="@+id/tomatometer"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView6" />
-
         <TextView
             android:id="@+id/textView16"
             android:layout_width="80dp"
             android:layout_height="20dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginBottom="44dp"
             android:text="Rating"
             android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/appleButton"
             app:layout_constraintEnd_toStartOf="@+id/textView18"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ratingBar2" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/textView19"
             android:layout_width="80dp"
             android:layout_height="20dp"
             android:layout_marginTop="12dp"
+            android:layout_marginBottom="46dp"
             android:text="Duration"
             android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/appleButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/textView18"
             app:layout_constraintTop_toBottomOf="@+id/duration" />
 
         <TextView
-            android:id="@+id/tomatometer"
+            android:id="@+id/tomato"
             android:layout_width="80dp"
             android:layout_height="20dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginStart="43dp"
+            android:layout_marginBottom="12dp"
             android:text="90%"
             android:textAlignment="center"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/duration"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/ratingBar2"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+            app:layout_constraintBottom_toTopOf="@+id/textView18"
+            app:layout_constraintStart_toEndOf="@+id/rating" />
+
+        <TextView
+            android:id="@+id/rating"
+            android:layout_width="80dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="43dp"
+            android:layout_marginBottom="12dp"
+            android:text="90%"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/textView16"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/textView18"
             android:layout_width="80dp"
             android:layout_height="20dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginBottom="46dp"
             android:text="Tomatometer"
             android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/appleButton"
             app:layout_constraintEnd_toStartOf="@+id/textView19"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/textView16"
-            app:layout_constraintTop_toBottomOf="@+id/tomatometer" />
+            app:layout_constraintStart_toEndOf="@+id/textView16" />
 
         <TextView
             android:id="@+id/duration"
             android:layout_width="80dp"
             android:layout_height="20dp"
+            android:layout_marginStart="44dp"
             android:layout_marginTop="40dp"
+            android:layout_marginEnd="42dp"
             android:text="2h 30min"
             android:textAlignment="center"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tomatometer"
+            app:layout_constraintStart_toEndOf="@+id/tomato"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
         <Button
-            android:id="@+id/amazonButton"
+            android:id="@+id/appleButton"
             android:layout_width="369dp"
             android:layout_height="43dp"
             android:layout_marginStart="15dp"
             android:layout_marginTop="44dp"
             android:layout_marginEnd="15dp"
             android:backgroundTint="#FFFFFF"
-            android:text="AMZ  $14.99"
+            android:text="APPLE"
             android:textColor="#E91E63"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -169,11 +174,11 @@
             android:layout_marginTop="11dp"
             android:layout_marginEnd="15dp"
             android:backgroundTint="#E91E63"
-            android:text="AMZ  $14.99"
+            android:text="GOOGLE"
             android:textColor="#FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/amazonButton" />
+            app:layout_constraintTop_toBottomOf="@+id/appleButton" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
