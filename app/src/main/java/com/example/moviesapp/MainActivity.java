@@ -37,49 +37,45 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Movie> movies = new ArrayList<>();
     ArrayList<FirebaseConnection> links = new ArrayList<>();
     AsyncTask<Void,Void,String> asyncTask;
-//    private final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+    private final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
-    private void loadData(){
-        FirebaseConnection fb1 = new FirebaseConnection(
-                "https://itunes.apple.com/cr/movie/spider-man-homecoming/id1243195844?l=en",
-                "https://play.google.com/store/movies/details/Spider_Man_Homecoming?id=vaYRC8mIusY",
-                "https://www.rottentomatoes.com/m/spider_man_homecoming"
-                );
-        FirebaseConnection fb2 = new FirebaseConnection(
-                "https://itunes.apple.com/us/movie/aquaman-2018/id1444244278",
-                "https://play.google.com/store/movies/details/Aquaman?id=dvbliOZgQoE.P",
-                "https://www.rottentomatoes.com/m/Aquaman"
-        );
-
-        FirebaseConnection fb3 = new FirebaseConnection(
-                "https://itunes.apple.com/us/movie/avengers-endgame/id1459467957",
-                "https://play.google.com/store/movies/details/Avengers_Endgame?id=E768AD6FC39C1A0FMV",
-                "https://www.rottentomatoes.com/m/avengers_endgame"
-        );
-
-        FirebaseConnection fb4 = new FirebaseConnection(
-                "https://itunes.apple.com/us/movie/venom/id1437190744",
-                "https://play.google.com/store/movies/details/Venom?id=3zaLCAblv4U",
-                "https://www.rottentomatoes.com/m/venom_2018"
-        );
-
-        links.add(fb1);
-        links.add(fb2);
-        links.add(fb3);
-        links.add(fb4);
-    }
+//    private void loadData(){
+//        FirebaseConnection fb1 = new FirebaseConnection(
+//                "https://itunes.apple.com/cr/movie/spider-man-homecoming/id1243195844?l=en",
+//                "https://play.google.com/store/movies/details/Spider_Man_Homecoming?id=vaYRC8mIusY",
+//                "https://www.rottentomatoes.com/m/spider_man_homecoming"
+//                );
+//        FirebaseConnection fb2 = new FirebaseConnection(
+//                "https://itunes.apple.com/us/movie/aquaman-2018/id1444244278",
+//                "https://play.google.com/store/movies/details/Aquaman?id=dvbliOZgQoE.P",
+//                "https://www.rottentomatoes.com/m/Aquaman"
+//        );
+//
+//        FirebaseConnection fb3 = new FirebaseConnection(
+//                "https://itunes.apple.com/us/movie/avengers-endgame/id1459467957",
+//                "https://play.google.com/store/movies/details/Avengers_Endgame?id=E768AD6FC39C1A0FMV",
+//                "https://www.rottentomatoes.com/m/avengers_endgame"
+//        );
+//
+//        FirebaseConnection fb4 = new FirebaseConnection(
+//                "https://itunes.apple.com/us/movie/venom/id1437190744",
+//                "https://play.google.com/store/movies/details/Venom?id=3zaLCAblv4U",
+//                "https://www.rottentomatoes.com/m/venom_2018"
+//        );
+//
+//        links.add(fb1);
+//        links.add(fb2);
+//        links.add(fb3);
+//        links.add(fb4);
+//    }
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         listView = findViewById(R.id.listView);
-        loadData();
-        Log.d("Main", Integer.toString(links.size()));
-        asyncTask = new LongOperation();
-        asyncTask.execute();
+        getFirebaseLinks();
 
     }
 
@@ -92,34 +88,37 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-//    public void getFirebaseLinks(){
-//        database.child("movies").addValueEventListener(new ValueEventListener(){
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                if (snapshot.exists()){
-//                    for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-//                        if (dataSnapshot.exists()){
-//                            String apple = dataSnapshot.child("apple").getValue().toString();
-//                            String google = dataSnapshot.child("google").getValue().toString();
-//                            String tomato = dataSnapshot.child("tomato").getValue().toString();
-//                            FirebaseConnection link = new FirebaseConnection(apple,google,tomato);
-//                            links.add(link);
-//                        }
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-//    }
+    public void getFirebaseLinks(){
+        database.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot: snapshot.child("movies").getChildren()){
+                    FirebaseConnection link = new FirebaseConnection(
+                            dataSnapshot.child("apple").getValue().toString(),
+                            dataSnapshot.child("google").getValue().toString(),
+                            dataSnapshot.child("tomato").getValue().toString()
+                    );
+                    links.add(link);
+                }
+                if (links.size() >0){
+                    asyncTask = new LongOperation();
+                    asyncTask.execute();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
 
     private final class LongOperation extends AsyncTask<Void,Void,String>{
 
         @Override
         protected String doInBackground(Void... voids) {
+            Log.d("FIREBASE", Integer.toString(links.size()));
             for (FirebaseConnection link: links){
                 WebScraping webScraping = new WebScraping(link.getApple(),
                         link.getGoogle(), link.getTomato());
