@@ -45,7 +45,7 @@
             android:layout_margin="5dp"
             android:layout_weight="0.2"
             android:text="000.00"
-            android:textColor="#F10606"
+            android:textColor="@color/primary"
             android:textSize="15sp"
             android:textStyle="bold"></TextView>
 

@@ -1,9 +1,13 @@
 package com.example.moviesapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -62,4 +66,5 @@ public class MovieActivity extends AppCompatActivity {
         appleView.setText("APPLE TV " + apple);
         googleView.setText("GOOGLE " + google);
     }
+
 }
