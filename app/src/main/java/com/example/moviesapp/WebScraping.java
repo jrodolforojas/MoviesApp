@@ -77,21 +77,21 @@ public class WebScraping {
             movie.setGooglePlayPrice(googlePlayPrice);
 
             //Get movie's video
-            Element divVideo = document.selectFirst("div.TdqJUe");
-            String video = divVideo.selectFirst("button").attr("data-trailer-url");
-            if (!video.equals("")){
-                movie.addMediaItem(video);
-            }
+//            Element divVideo = document.selectFirst("div.TdqJUe");
+//            String video = divVideo.selectFirst("button").attr("data-trailer-url");
+//            if (!video.equals("")){
+//                movie.addMediaItem(video);
+//            }
 
             //Get movie category
-            Element divCategory = document.selectFirst("div.T9A3Nb");
-            String category = divCategory.selectFirst("a").text();
-            movie.setCategory(category);
+//            Element divCategory = document.selectFirst("div.T9A3Nb");
+//            String category = divCategory.selectFirst("a").text();
+//            movie.setCategory(category);
 
             // Get movie synopsis
-            Element divSynopsis = document.selectFirst("div.DWPxHb");
-            String synopsis = divSynopsis.selectFirst("span").text();
-            movie.setSynopsis(synopsis);
+//            Element divSynopsis = document.selectFirst("div.DWPxHb");
+//            String synopsis = divSynopsis.selectFirst("span").text();
+//            movie.setSynopsis(synopsis);
 
 
         }
@@ -114,9 +114,6 @@ public class WebScraping {
                     attr("data-ac-films-href");
             if (!appleVideo.equals("")){
                 movie.addMediaItem(appleVideo);
-            }
-            else{
-                Log.d("APPLE", "XD");
             }
 
         }
