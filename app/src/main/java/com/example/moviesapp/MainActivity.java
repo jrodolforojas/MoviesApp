@@ -12,11 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebBackForwardList;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,6 +32,7 @@ import org.jsoup.nodes.Element;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Timer;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,44 +42,12 @@ public class MainActivity extends AppCompatActivity {
     AsyncTask<Void,Void,String> asyncTask;
     private final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
-//    private void loadData(){
-//        FirebaseConnection fb1 = new FirebaseConnection(
-//                "https://itunes.apple.com/cr/movie/spider-man-homecoming/id1243195844?l=en",
-//                "https://play.google.com/store/movies/details/Spider_Man_Homecoming?id=vaYRC8mIusY",
-//                "https://www.rottentomatoes.com/m/spider_man_homecoming"
-//                );
-//        FirebaseConnection fb2 = new FirebaseConnection(
-//                "https://itunes.apple.com/us/movie/aquaman-2018/id1444244278",
-//                "https://play.google.com/store/movies/details/Aquaman?id=dvbliOZgQoE.P",
-//                "https://www.rottentomatoes.com/m/Aquaman"
-//        );
-//
-//        FirebaseConnection fb3 = new FirebaseConnection(
-//                "https://itunes.apple.com/us/movie/avengers-endgame/id1459467957",
-//                "https://play.google.com/store/movies/details/Avengers_Endgame?id=E768AD6FC39C1A0FMV",
-//                "https://www.rottentomatoes.com/m/avengers_endgame"
-//        );
-//
-//        FirebaseConnection fb4 = new FirebaseConnection(
-//                "https://itunes.apple.com/us/movie/venom/id1437190744",
-//                "https://play.google.com/store/movies/details/Venom?id=3zaLCAblv4U",
-//                "https://www.rottentomatoes.com/m/venom_2018"
-//        );
-//
-//        links.add(fb1);
-//        links.add(fb2);
-//        links.add(fb3);
-//        links.add(fb4);
-//    }
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         listView = findViewById(R.id.listView);
         getFirebaseLinks();
-
     }
 
     private void printMovieInfo(){
@@ -88,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void getFirebaseLinks(){
+    private void getFirebaseLinks(){
         database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -135,6 +106,17 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             Log.d("POST",s);
             printMovieInfo();
+            MainAdapter mainAdapter = new MainAdapter(MainActivity.this, movies);
+            listView.setAdapter(mainAdapter);
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Toast.makeText(MainActivity.this,
+                            "Movie: " + movies.get(i).getName(), Toast.LENGTH_SHORT);
+                }
+            });
+
         }
     }
 
